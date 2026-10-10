@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 
 export default function HomePage() {
   const [products, setProducts] = useState([]);
@@ -40,7 +39,8 @@ export default function HomePage() {
           </a>
         </div>
         <div className="w-48 md:w-64 flex-shrink-0">
-          <Image src="/bazar-hero.png" alt="Bazar Hero" width={250} height={200} className="w-full h-auto object-contain" priority />
+          {/* Standard img tag for bazar-hero.png */}
+          <img src="/bazar-hero.png" alt="Bazar Hero" className="w-full h-auto object-contain" />
         </div>
       </section>
 

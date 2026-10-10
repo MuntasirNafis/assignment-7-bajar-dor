@@ -1,14 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 
 export default function Navbar() {
   const [categories, setCategories] = useState([]);
   const [tickerData, setTickerData] = useState([]);
-  const pathname = usePathname();
 
   useEffect(() => {
     fetch("https://api.abcz.workers.dev/api/bazardor/categories")
@@ -24,7 +21,8 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
       <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center border-b border-gray-100">
         <Link href="/" className="flex items-center gap-2">
-          <Image src="/logo-icon.png" alt="Bazar Dor Logo" width={32} height={32} className="object-contain" />
+          {/* Standard img tag to ensure logo renders instantly */}
+          <img src="/logo-icon.png" alt="Bazar Dor Logo" className="w-8 h-8 object-contain" />
           <div>
             <h1 className="font-bold text-lg text-emerald-800">বাজার দর</h1>
             <p className="text-xs text-gray-500">শনিবার, ১০ অক্টোবর, ২০২৬</p>
@@ -41,14 +39,14 @@ export default function Navbar() {
       </div>
 
       <nav className="max-w-6xl mx-auto px-4 py-2 flex gap-6 overflow-x-auto text-sm font-medium text-gray-700">
-        <Link href="/" className={`hover:text-emerald-600 whitespace-nowrap ${pathname === '/' ? 'text-emerald-600 font-semibold border-b-2 border-emerald-600 pb-1' : ''}`}>
+        <Link href="/" className="hover:text-emerald-600 whitespace-nowrap">
           হোম
         </Link>
         {categories.map((cat: any) => (
           <Link
             key={cat.id || cat.slug}
             href={`/category/${cat.slug}`}
-            className={`hover:text-emerald-600 whitespace-nowrap ${pathname === `/category/\${cat.slug}` ? 'text-emerald-600 font-semibold border-b-2 border-emerald-600 pb-1' : ''}`}
+            className="hover:text-emerald-600 whitespace-nowrap"
           >
             {cat.icon} {cat.nameBn}
           </Link>
