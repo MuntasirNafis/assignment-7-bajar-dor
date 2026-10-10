@@ -1,16 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 
-export default function CategoryPage() {
-  const { slug } = useParams();
+function CategoryContent() {
+  const params = useParams();
+  const slug = params?.slug;
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [sortOrder, setSortOrder] = useState("default");
 
   useEffect(() => {
+    if (!slug) return;
     fetch(`https://api.abcz.workers.dev/api/bazardor/products?category=${slug}`)
       .then((res) => res.json())
       .then((data) => {
@@ -91,5 +93,13 @@ export default function CategoryPage() {
         ))}
       </div>
     </main>
+  );
+}
+
+export default function CategoryPage() {
+  return (
+    <Suspense fallback={<div className="text-center py-20">লোড হচ্ছে...</div>}>
+      <CategoryContent />
+    </Suspense>
   );
 }

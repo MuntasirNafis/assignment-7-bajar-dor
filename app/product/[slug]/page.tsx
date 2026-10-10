@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
 
-export default function ProductDetailsPage() {
-  const { slug } = useParams();
+function ProductDetailsContent() {
+  const params = useParams();
+  const slug = params?.slug;
   const router = useRouter();
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -15,6 +17,8 @@ export default function ProductDetailsPage() {
       router.push("/signin");
       return;
     }
+
+    if (!slug) return;
 
     fetch("https://api.abcz.workers.dev/api/bazardor/products")
       .then((res) => res.json())
@@ -27,6 +31,17 @@ export default function ProductDetailsPage() {
 
   if (loading) {
     return <div className="max-w-6xl mx-auto px-4 py-20 text-center text-gray-500 font-medium">লোড হচ্ছে...</div>;
+  }
+
+  if (!product) {
+    return (
+      <div className="max-w-6xl mx-auto px-4 py-20 text-center">
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">পণ্যটি পাওয়া যায়নি</h2>
+        <Link href="/" className="bg-emerald-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-emerald-700 transition">
+          হোম পেজে ফিরে যান
+        </Link>
+      </div>
+    );
   }
 
   return (
@@ -77,5 +92,13 @@ export default function ProductDetailsPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function ProductDetailsPage() {
+  return (
+    <Suspense fallback={<div className="text-center py-20 font-medium text-gray-500">লোড হচ্ছে...</div>}>
+      <ProductDetailsContent />
+    </Suspense>
   );
 }
