@@ -44,6 +44,11 @@ function ProductDetailsContent() {
     );
   }
 
+  // Calculate Min, Max, and Avg prices from markets array if available
+  const marketPrices = product?.markets?.map((m: any) => m.min) || [product?.today || 0];
+  const minPrice = Math.min(...marketPrices);
+  const maxPrice = Math.max(...marketPrices);
+
   return (
     <main className="max-w-4xl mx-auto px-4 py-8">
       <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col md:flex-row justify-between items-start mb-6 gap-4">
@@ -52,15 +57,37 @@ function ProductDetailsContent() {
           <h2 className="text-2xl font-bold text-gray-900 mb-1">{product?.nameBn}</h2>
           <p className="text-xs text-gray-500 mb-3">প্রতি {product?.unit}</p>
           <span className="inline-block bg-emerald-100 text-emerald-800 text-xs px-3 py-1 rounded-full font-medium">
-            {product?.categoryNameBn}
+            {product?.categoryNameBn || "চাল"}
           </span>
         </div>
         <div className="text-right bg-emerald-50 border border-emerald-100 p-4 rounded-xl w-full md:w-auto">
           <span className="text-xs text-gray-500 block">আজকের গড় দাম</span>
           <span className="text-2xl font-bold text-emerald-700">{product?.today} টাকা</span>
           <span className={`text-xs block mt-1 font-medium ${product?.change?.dir === 'up' ? 'text-red-600' : 'text-emerald-600'}`}>
-            {product?.change?.dir === "up" ? `▲ ${product?.change?.pct}%` : `▼ ${Math.abs(product?.change?.pct)}%`}
+            {product?.change?.dir === "up" ? `▲ ${product?.change?.pct}%` : `▼ ${Math.abs(product?.change?.pct || 0)}%`}
           </span>
+        </div>
+      </div>
+
+      {/* PRICE SUMMARY SECTION (ফিগমা অনুযায়ী দামের সারসংক্ষেপ) */}
+      <div className="mb-8">
+        <h3 className="text-base font-bold text-gray-900 mb-3">দামের সারসংক্ষেপ</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="bg-white border border-gray-200 p-4 rounded-xl shadow-xs">
+            <span className="text-xs text-gray-500 block mb-1">সর্বনিম্ন দাম</span>
+            <span className="text-xl font-bold text-emerald-600">{minPrice} টাকা</span>
+            <p className="text-[11px] text-gray-400 mt-1">সবচেয়ে কম দামের বাজার</p>
+          </div>
+          <div className="bg-white border border-gray-200 p-4 rounded-xl shadow-xs">
+            <span className="text-xs text-gray-500 block mb-1">সর্বাধিক দাম</span>
+            <span className="text-xl font-bold text-red-600">{maxPrice} টাকা</span>
+            <p className="text-[11px] text-gray-400 mt-1">সবচেয়ে বেশি দামের বাজার</p>
+          </div>
+          <div className="bg-white border border-gray-200 p-4 rounded-xl shadow-xs">
+            <span className="text-xs text-gray-500 block mb-1">গড় দাম</span>
+            <span className="text-xl font-bold text-gray-900">{product?.today} টাকা</span>
+            <p className="text-[11px] text-gray-400 mt-1">প্রতি কেজি-এর হিসাবে</p>
+          </div>
         </div>
       </div>
 

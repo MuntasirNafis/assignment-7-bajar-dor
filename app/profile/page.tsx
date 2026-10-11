@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
   const router = useRouter();
-  const [user, setUser] = useState<{ name: string; email: string }>({ name: "Rezwan Ahmed", email: "rezwanahmed@gmail.com" });
+  const [user, setUser] = useState<{ name: string; email: string }>({ name: "Nafis", email: "muntasirnafis@gmail.com" });
   const [nameInput, setNameInput] = useState("");
 
   useEffect(() => {
@@ -17,9 +17,13 @@ export default function ProfilePage() {
 
     const storedUser = localStorage.getItem("user_data");
     if (storedUser) {
-      const parsed = JSON.parse(storedUser);
-      setUser(parsed);
-      setNameInput(parsed.name || "");
+      try {
+        const parsed = JSON.parse(storedUser);
+        setUser(parsed);
+        setNameInput(parsed.name || "");
+      } catch (e) {
+        console.error(e);
+      }
     }
   }, [router]);
 
@@ -28,12 +32,18 @@ export default function ProfilePage() {
     const updated = { ...user, name: nameInput };
     setUser(updated);
     localStorage.setItem("user_data", JSON.stringify(updated));
-    alert("নাম সফলভাবে আপডেট করা হয়েছে!");
+
+    // Notify Navbar to update user name
+    window.dispatchEvent(new Event("authChange"));
+    alert("নাম সফলভাবে আপডেট করা হয়েছে!");
   };
 
   const handleSignOut = () => {
     localStorage.removeItem("auth_token");
     localStorage.removeItem("user_data");
+
+    // Notify Navbar immediately
+    window.dispatchEvent(new Event("authChange"));
     router.push("/signin");
   };
 
@@ -44,8 +54,8 @@ export default function ProfilePage() {
 
       <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-xs mb-6 flex justify-between items-center">
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-full bg-emerald-100 flex items-center justify-center text-xl font-bold text-emerald-800">
-            {user.name.charAt(0)}
+          <div className="w-14 h-14 rounded-full bg-emerald-100 flex items-center justify-center text-xl font-bold text-emerald-800 uppercase">
+            {user.name ? user.name.charAt(0) : "N"}
           </div>
           <div>
             <h3 className="font-bold text-gray-900 text-lg">{user.name}</h3>
@@ -55,7 +65,7 @@ export default function ProfilePage() {
 
         <button
           onClick={handleSignOut}
-          className="px-4 py-1.5 border border-red-200 text-red-600 hover:bg-red-50 text-xs font-medium rounded-lg transition"
+          className="px-4 py-1.5 border border-red-200 text-red-600 hover:bg-red-50 text-xs font-medium rounded-lg transition cursor-pointer"
         >
           সাইন আউট
         </button>
@@ -76,7 +86,7 @@ export default function ProfilePage() {
 
           <button
             type="submit"
-            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2.5 rounded-lg text-sm transition shadow-xs"
+            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2.5 rounded-lg text-sm transition shadow-xs cursor-pointer"
           >
             আপডেট
           </button>
