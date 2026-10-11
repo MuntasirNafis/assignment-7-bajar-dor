@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 
 export default function Navbar() {
@@ -21,8 +22,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
       <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center border-b border-gray-100">
         <Link href="/" className="flex items-center gap-2">
-          {/* Standard img tag to ensure logo renders instantly */}
-          <img src="/logo-icon.png" alt="Bazar Dor Logo" className="w-8 h-8 object-contain" />
+          <Image src="/logo-icon.png" alt="Logo" width={32} height={32} className="w-8 h-8 object-contain" />
           <div>
             <h1 className="font-bold text-lg text-emerald-800">বাজার দর</h1>
             <p className="text-xs text-gray-500">শনিবার, ১০ অক্টোবর, ২০২৬</p>

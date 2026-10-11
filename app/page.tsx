@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function HomePage() {
   const [products, setProducts] = useState([]);
@@ -32,15 +33,14 @@ export default function HomePage() {
           </span>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">আজকের বাজারের দাম এক নজরে</h2>
           <p className="text-gray-600 mb-6 text-sm leading-relaxed">
-            চাল, ডাল, তেল, সবজি, মাছ, মাংস, ডিম ও মসলার দাম — বাজারভিত্তিক বিস্তারিত, গড়, সর্বনিম্ন-সর্বোচ্চ এবং দামের পরিবর্তন এক জায়গায়।
+            চাল, ডাল, তেল, সবজি, মাছ, মাংস, ডিম ও মসলার দাম — বাজারভিত্তিক বিস্তারিত, গড়, সর্বনিম্ন-সর্বোচ্চ এবং দামের পরিবর্তন এক জায়গায়।
           </p>
           <a href="#all-products" className="inline-block bg-emerald-600 text-white font-medium px-6 py-2.5 rounded-lg hover:bg-emerald-700 transition shadow-sm">
             সব পণ্য দেখুন
           </a>
         </div>
         <div className="w-48 md:w-64 flex-shrink-0">
-          {/* Standard img tag for bazar-hero.png */}
-          <img src="/bazar-hero.png" alt="Bazar Hero" className="w-full h-auto object-contain" />
+          <Image src="/bazar-hero.png" alt="Bazar Hero" width={300} height={300} className="w-full h-auto object-contain" priority />
         </div>
       </section>
 
